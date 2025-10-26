@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivis Markaz Islami | Official Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #736b23;
+            --secondary: #9ade24;
+            --accent: #f5de3e;
+            --light: #ecf0f1;
+            --dark: #0d0a06;
+            --text: #333;
+            --text-light: #777;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3, h4 {
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: none;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Styles */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 15px;
+        }
+
+        .logo {
+            display: inline-block;
+            cursor: none;
+            width: auto;
+            height: 80px;
+        }
+
+        .logo img {
+            width: auto;
+            height: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: none;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: none;
+            font-size: 1.5rem;
+        }
+
+        /* Updated Hero Section Styles */
+        .hero {
+            position: relative; /* Added for layering */
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            overflow: hidden; /* Added to contain video */
+            background: #0d0a06;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: -2; /* Behind overlay and content */
+            pointer-events: auto; /* Allow interactions for pausing */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            z-index: -1; /* Above video, below content */
+            pointer-events: none; /* Allow clicks to pass through to video */
+        }
+
+        .hero-content {
+            position: relative; /* Ensures content stays on top */
+            z-index: 1;
+            pointer-events: none; /* Allow clicks to pass through to video, but buttons will override */
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-top: 150px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 15px;
+            color: var(--light);
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: auto; /* Allow interaction with controls */
+        }
+
+        .video-controls.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .video-controls button {
+            padding: 10px 15px;
+            background: transparent;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: none;
+            font-size: 1rem;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--light);
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-text {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .about-text ul {
+            list-style-type: none;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Events Section Styles */
+        .events-section {
+            background: var(--light);
+            display: none;
+        }
+        
+        .event-card h4 {
+            font-size: 1.3rem;
+        }
+
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .events-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .events-back:hover {
+            color: var(--secondary);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-date {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .event-card h4 {
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        /* Team Section */
+        .team {
+            background: var(--light);
+        }
+
+        .team-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .team-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+            flex: 0 0 calc(33.333% - 20px);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-img {
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .team-member:hover .member-img img {
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 20px;
+        }
+
+        .member-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: flex;
+            gap: 50px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-details {
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .logo {
+                height: 70px;
+            }
+            .hero-video {
+                top: 65px;
+            }
+            .hero-content h1 {
+                margin-top: 140px;
+                font-size: 3.2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .about-content, .contact-content, .events-header {
+                flex-direction: column;
+            }
+            
+            .about-image {
+                margin-top: 30px;
+            }
+
+            .events-back {
+                margin-bottom: 20px;
+            }
+
+            .logo {
+                height: 60px;
+            }
+            .hero-video {
+                top: 55px;
+            }
+            .hero-content h1 {
+                margin-top: 120px;
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                transition: left 0.3s;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.8rem;
+                margin-top: 90px;
+            }
+
+            .logo {
+                height: 50px;
+            }
+
+            .hero-video {
+                top: 45px;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 1.1rem;
+            }
+
+            .hamburger {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                height: 40px;
+            }
+
+            .hero-video {
+                top: 35px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+                margin-top: 70px;
+            }
+
+            .hero-content p {
+                font-size: 0.95rem;
+                max-width: 90%;
+            }
+
+            .video-controls button {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .nav-links {
+                top: 50px;
+                padding: 15px 0;
+            }
+
+            .nav-links a {
+                font-size: 1rem;
+            }
+
+            .hamburger {
+                font-size: 1.2rem;
+            }
+
+            .navbar {
+                padding: 0.5rem 0;
+            }
+        }
+
+        /* Landscape */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .hero {
+                height: 90vh;
+            }
+            .hero-content h1 {
+                margin-top: 100px;
+                font-size: 2.5rem;
+            }
+            .logo {
+                height: 50px;
+            }
+            .hero-video {
+                top: 45px;
+            }
+        }
+
+        /* Portrait */
+        @media (orientation: portrait) and (max-width: 480px) {
+            .hero {
+                height: auto;
+                min-height: 100vh;
+            }
+            .hero-content {
+                padding-top: 20px;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .team-row {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .team-row .team-member {
+                flex: 0 0 calc(50% - 15px);
+            }
+
+            .team-row.three-cards .team-member:nth-child(2),
+            .team-row.three-cards .team-member:nth-child(3) {
+                display: none;
+            }
+
+            .team-row.three-cards .team-member:nth-child(1) .member-img,
+            .team-row.three-cards .team-member:nth-child(1) .member-info {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#home" class="logo">
+                    <img src="ami.png" alt="Aktivis Markaz Islami Logo">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Division</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Updated Hero Section -->
+    <section class="hero" id="home">
+        <!-- Video Background -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="ami.mp4" type="video/mp4">
+            <!-- Fallback: Your original image if video fails to load -->
+            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" alt="Fallback Hero Image">
+        </video>
+        
+        <!-- Gradient Overlay -->
+        <div class="hero-overlay"></div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <h1>Aktivis Markaz Islami</h1>
+                <p>Berjihad, berkarya, bersinergi dalam dakwah.</p>
+                <div class="video-controls">
+                    <button id="playPause"><i class="fas fa-pause"></i></button>
+                    <button id="muteUnmute"><i class="fas fa-volume-mute"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Vision</h3>
+                    <p>Menjadikan AMI SMA IT Nur Hidayah sebagai organisasi yang islami, profesional dan berintegritas dalam bingkai ukhuwah islamyah yang berdasarkan al Qur'an dan as sunnah.</p>
+                    <h3>Our Missions</h3>
+                    <ul>
+                        <li><p> Mengoptimalkan pembinaan Pengurus AMI SMA IT Nur Hidayah.</p></li>
+                        <li><p>Meningkatkan profesionalitas kerja AMI SMA IT Nur Hidayah.</p></li>
+                        <li><p>Mengelola syiar dan dakwah secara kreatif, efektif dan inovatif.</p></li>
+                           <li><p>Kemakmuran Masjid Samsul Arifin Madjid dan Masjid Syaikhoh Ummu Abdillah.</p></li>
+                            <li> <p>Membentuk serta menjaga nuansa islami di lingkungan AMI SMAIT Nur Hidayah.</p></li>
+                            <li><p>Memperkuat Ukhuwah islamiyah Pengurus AMI SMA IT Nur Hidayah.</p></li>
+                    </ul>
+                </div>
+                <!-- <div class="about-image">
+                    <img src="" alt="Our Team">
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2>Our Divisions</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Sekretaris Umum</h3>
+                    <p>Divisi yang memanajemen administrasi di organisasi.</p>
+                    <a href="#events-sekretaris" class="btn">Events</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Bendahara Umum</h3>
+                    <p>Divisi yang mengatur cashflow organisasi.</p>
+                    <a href="#events-bendahara" class="btn">Events</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Pemberdayaan Sumber Daya Manusia</h3>
+                    <p>Divisi yang bertanggung jawab atas pengembangan skill dan kedekatan antar pengurus.</p>
+                    <a href="#events-psdm" class="btn">Events</a>
+                </div>
+                                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3>Syiar dan Dakwah</h3>
+                    <p>Divisi yang menjadi sarana penyebaran dakwah dengan mengoptimalkan media sosial yang ada.</p>
+                    <a href="#events-syiar" class="btn">Events</a>
+                </div>
+                                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mosque"></i>
+                    </div>
+                    <h3>Dewan Kemakmuran Masjid dan al Qur'an</h3>
+                    <p>Divisi yang bertanggung jawab atas kemakmuran masjid.</p>
+                    <a href="#events-dkm" class="btn">Events</a>
+                </div>
+                                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-person"></i>
+                    </div>
+                    <h3>Jasadiyah wa Ruhiyah</h3>
+                    <p>Divisi yang berfokus pada peningkatan jasadiyah dan ruhiyah seluruh murid SMA IT Nur Hidayah.</p>
+                    <a href="#events-jasadiyah" class="btn">Events</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section for Sekretaris Umum -->
+    <section class="events-section" id="events-sekretaris">
+        <div class="container">
+            <div class="events-header">
+                <a href="#services" class="events-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Divisions
+                </a>
+                <h2>Events - Sekretaris Umum</h2>
+            </div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <h4>Syura Kerja</h4>
+                    <div class="event-date">Sabtu, 23 Agustus 2025</div>
+                    <p>Mendiskusikan program kerja dan melatih pengurus untuk teratur dalam perencanaan program.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Amandemen AD/ART</h4>
+                    <div class="event-date">Sabtu, 27 September 2025</div>
+                    <p>Pengesahan logo dan AD/ART masa bakti 2025/2026.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Kesekretariatan</h4>
+                    <div class="event-date">Selama masa bakti 2025/2026</div>
+                    <p>Membantu kerapihan dalam pengarsipan dan pencadangan data administrasi AMI.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Inventaris AMI</h4>
+                    <div class="event-date">Selama masa bakti 2025/2026</div>
+                    <p>Mengurangi resiko kehilangan, kerusakan dan sebagai upaya untuk memenuhi barang-barang inventaris serta penjagaan terhadap barang milik AMI.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>SPHL 1</h4>
+                    <div class="event-date">Sabtu, 11 Oktober 2025</div>
+                    <p>Sebagai sarana penyambutan dan pengenalan antar pengurus AMI.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Forum Kesekretariatan</h4>
+                    <div class="event-date">Selasa, 14 Oktober 2025</div>
+                    <p>Untuk meningkatkan kepahaman kepada seluruh pengurus terkait kesekretariatan.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>SPHL 2</h4>
+                    <div class="event-date">Sabtu—Ahad, 23—24 Mei 2026</div>
+                    <p>Sebagai sarana memotivasi, mengoptimalkan diri dan mempererat ukhuwah antar pengurus AMI.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>SPHT</h4>
+                    <div class="event-date">Insidental</div>
+                    <p>Sebagai sarana untuk mengoptimalkan kinerja dan mempererat ukhuwah antar pengurus.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Galang Aspirasi AMI</h4>
+                    <div class="event-date"><ul style="list-style-type: none; text-align: left;" >
+                        <li>Periode 1: 15 Oktober—15 Desember</li>
+                        <li>Periode 2: 15 Januari—15 Februari</li>
+                        <li>Periode 3: 16 Maret—15 Mei</li>
+                    </ul></div>
+                    <p>Menampung aspirasi guna membentuk AMI yang lebih baik.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Audensi AMI</h4>
+                    <div class="event-date"><ul style="list-style-type: none; text-align: left;">
+    <li>Audensi AMI 1: 20 November 2025</li>
+    <li>Audensi AMI 2: 20 Maret 2026</li>
+</ul></div>
+                    <p>Mengevaluasi program kerja dan kinerja Pengurus Harian Tetap (PHT) AMI SMA IT Nur Hidayah masa bakti 2025/2026.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Sidang Pleno 1</h4>
+                    <div class="event-date">Sabtu—Ahad, 7 Februari—8 Februari  2026
+</div>
+                    <p>Untuk mengevaluasi program kerja selama setengah tahun masa bakti 2025/2026.</p>
+                </div>
+                                                <div class="event-card">
+                                    <h4>Sidang Umum</h4>
+                                    <div class="event-date">Sabtu—Ahad, 25—26 Juli 2026
+</div>
+                                    <p>Untuk mengevaluasi program kerja selama satu tahun masa bakti 2025/2026.</p>
+                                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section for Bendahara Umum -->
+    <section class="events-section" id="events-bendahara">
+        <div class="container">
+            <div class="events-header">
+                <a href="#services" class="events-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Divisions
+                </a>
+                <h2>Events - Bendahara Umum</h2>
+            </div>
+                <div class="event-card">
+                    <h4>Manajemen Keuangan</h4>
+                    <div class="event-date">Dimulai pada 11 Agustus 2025 hingga akhir masa bakti 2025/2026</div>
+                    <p>Mengetahui dan memantau siklus keuangan AMI.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>Kas Rutin AMI</h4>
+                    <div class="event-date">Setiap satu semester sekali selama masa bakti 2025/2026</div>
+                    <p>Membantu finansial dalam program kerja AMI masa bakti 2025/2026.</p>
+                </div>
+                                <div class="event-card">
+                    <h4>AMI Peduli</h4>
+                    <div class="event-date">Ahad, 15 Februari 2026</div>
+                    <p>Meningkatkan kesadaran untuk berbagi dan bersedekah, mencetak kepedulian terhadap lingkungan sekitar dan meningkatkan rasa syukur kepada Allah SWT.</p>
+                </div>
+        </div>
+    </section>
+
+    <!-- Events Section for Pemberdayaan Sumber Daya Manusia -->
+    <section class="events-section" id="events-psdm">
+        <div class="container">
+            <div class="events-header">
+                <a href="#services" class="events-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Divisions
+                </a>
+                <h2>Events - Pemberdayaan Sumber Daya Manusia</h2>
+            </div>
+            <div class="events-grid">
+                                <div class="event-card">
+                                    <h4>AMI Leadership Training</h4>
+                                    <div class="event-date">Sabtu—Ahad, 18—19 Oktober 2025</div>
+                                    <p>Mengembangkan kemampuan kepemimpinan yang bertanggung jawab, menumbuhkan semangat kerja sama dan kedisiplinan dalam menjalankan tugas organisasi, meningkatkan rasa percaya diri pengurus dalam menghadapi berbagai situasi kepemimpinan.</p>
+                                    </div>
+                                                                <div class="event-card">
+                                    <h4>AMI Mengajar</h4>
+                                    <div class="event-date">Sabtu, 8 November 2025<br>Tiga kali dalam satu pekan (Selasa, Kamis, Jumat) dimulai pada Selasa, 11 November 2025</div>
+                                    <p>Membekali pengurus dengan keterampilan dasar untuk menjadi pengajar TPA yang baik, meningkatkan rasa percaya diri, dan menumbuhkan kepedulian sosial melalui kegiatan pengabdian di masyarakat.</p>
+                                </div>
+                                                                <div class="event-card">
+                                    <h4>Mutabaah AMI</h4>
+                                    <div class="event-date">Setiap bulan sekali secara rutin, dimulai pada tanggal 24 bulan Oktober 2025</div>
+                                    <p>Sebagai sarana evaluasi ibadah sehari-hari baik yang wajib maupun sunah pada pengurus AMI masa bakti 2025/2026, menghasilkan pengurus yang unggul dan berkualitas dalam beribadah dan menjaga kedisiplinan pengurus dalam beramal.</p>
+                                </div>
+                                                                <div class="event-card">
+                                    <h4>Halakah Sighar</h4>
+                                                                        <div class="event-date">Setiap satu bulan sekali secara rutin, dimulai pada tanggal 24 bulan Oktober 2025</div>
+                                    <p>Mempererat hubungan antar anggota divisi dalam suasana kekeluargaan, mempererat ukhuah islamiyah antar anggota divisi dan anggota AMI secara keseluruhan dan menambah wawasan pengetahuan keislaman dan communication skill pada pengurus AMI.</p>
+                                    </div>
+                                                                <div class="event-card">
+                                    <h4>Gemilang Epilog AMI</h4>
+                                    <div class="event-date">Ahad, 19 Juli 2026</div>
+                                    <p>Memberikan penghargaan atas kontribusi dan kinerja pengurus selama masa bakti, meningkatkan motivasi pengurus untuk terus berperan aktif di masa mendatang dan memperkuat semangat persaudaraan dan solidaritas di antara seluruh pengurus AMI.</p>
+                                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section for Syiar dan Dakwah -->
+    <section class="events-section" id="events-syiar">
+        <div class="container">
+            <div class="events-header">
+                <a href="#services" class="events-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Divisions
+                </a>
+                <h2>Events - Syiar dan Dakwah</h2>
+            </div>
+                                                                <div class="event-card">
+                                                                    <h4>Medsos AMI</h4>
+                                                                    <div class="event-date">Setiap program kerja AMI masa bakti 2025/2026</div>
+                                                                    <p>Sebagai bentuk syiar dakwah digital, mempublikasikan dan memperkenalkan AMI SMA IT Nur Hidayah kepada masyarakat luas sekaligus menyampaikan konten dakwah melalui media sosial.</p>
+                                                                </div>
+                                                                                                                                <div class="event-card">
+                                                                    <h4>AMI Curious</h4>
+                                                                    <div class="event-date"><ul style="list-style-type: none; text-align: left;">
+    <li>Rabu, 26 November 2025</li>
+    <li>Rabu, 14 Januari 2026</li>
+    <li>Rabu, 25 Februari 2026</li>
+    <li>Rabu, 13 Mei 2026</li>
+</ul></div>
+                                                                    <p>Sebagai sarana untuk meningkatkan budaya literasi siswa/i SMAIT Nur Hidayah pada jam zeroscreen, sekaligus menumbuhkan kebiasaan positif dalam waktu senggang.</p>
+                                                                </div>
+                                                                                                                                <div class="event-card">
+                                                                    <h4>Tarhib Ramadan</h4>
+                                                                    <div class="event-date">Senin, 16 Februari 2026</div>
+                                                                    <p>Sebagai bentuk syiar sekaligus sarana untuk mengenalkan semangat kebersamaan dalam penyambutan bulan Ramadan kepada masyarakat.</p>
+                                                                </div>
+        </div>
+    </section>
+
+    <!-- Events Section for Dewan Kemakmuran Masjid dan al Qur'an -->
+    <section class="events-section" id="events-dkm">
+        <div class="container">
+            <div class="events-header">
+                <a href="#services" class="events-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Divisions
+                </a>
+                <h2>Events - Dewan Kemakmuran Masjid dan al Qur'an</h2>
+            </div>
+            <div class="events-grid">
+                                         <div class="event-card">
+                                         <h4>Bakti Sosial (BAKSOS)</h4>
+                                         <div class="event-date"><ul style="list-style-type: none; text-align: left;">
+    <li>Sabtu, 17 Januari 2026</li>
+    <li>Sabtu, 09 Mei 2026</li>
+</ul></div>
+                                         <p>Untuk meningkatkan rasa cinta dan kepedulian anggota Aktivis Markaz Islami (AMI) terhadap masjid, dan membantu masjid-masjid di sekitar lingkungan sekolah SMA IT Nur Hidayah.</p>
+                                     </div>
+                                                                          <div class="event-card">
+                                         <h4>Piket Rutin Masjid</h4>
+                                         <div class="event-date">Sebulan 2 kali (pada hari Jumat di minggu ke 2-dan minggu ke-4)</div>
+                                         <p>Untuk membantu menjaga kebersihan di masjid SAM dan SUA serta membantu menumbuhkan rasa cinta anggota Aktivis Markaz Islami (AMI) terhadap Masjid.</p>
+                                     </div>
+                                                                          <div class="event-card">
+                                         <h4>Pengondisian Ibadah</h4>
+                                         <div class="event-date">Setiap hari Senin—Jumat selama masa bakti</div>
+                                         <p>Membiasakan siswa/i tertib akan waktu salat di sekolah dapat terkondisikan dengan baik.</p>
+                                     </div>
+                                                                          <div class="event-card">
+                                         <h4>Jumat Berkah</h4>
+                                         <div class="event-date">Setiap hari Jumat selama masa bakti</div>
+                                         <p>Membangun kebiasaan baik dan tradisi Islam dalam bersedekah.</p>
+                                     </div>
+                                                                          <div class="event-card">
+                                         <h4>Ramadan Vibes</h4>
+                                         <div class="event-date">19 Februari  2026</div>
+                                         <p><ul style="list-style-type: none; text-align: left;">
+    <li><p>Meningkatkan pemahaman para pengurus AMI tentang makna bulan Ramadan melalui kegiatan menghias masjid dan berbagi.</p></li>
+    <li><p>Menumbuhkan semangat kebersamaan dan kepedulian melalui kegiatan menghias lingkungan sekolah dan berbagi selama Ramadan.</p></li>
+    <li><p>Menghidupkan suasana Ramadan di lingkungan sekolah agar seluruh warga sekolah dapat merasakan vibes Ramadan yang hangat dan penuh makna.</p></li>
+</ul></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section for Jasadiyah wa Ruhiyah -->
+    <section class="events-section" id="events-jasadiyah">
+        <div class="container">
+            <div class="events-header">
+                <a href="#services" class="events-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Divisions
+                </a>
+                <h2>Events - Jasadiyah wa Ruhiyah</h2>
+            </div>
+            <div class="events-grid">
+                                     </div>
+                                     <div class="event-card">
+                                         <h4>PHBI Maulid Nabi</h4>
+                                         <div class="event-date">Sabtu, 13 September 2025</div>
+                                         <p>Meneladani akhlak dan perjuangan Nabi Muhammad saw., Menumbuhkan rasa cinta dan teladan terhadap Nabi Muhammad saw., Menambah wawasan keislaman melalui kajian yang inspiratif dan mendalam.</p>
+                                     </div>
+                                                                          </div>
+                                     <div class="event-card">
+                                         <h4>PHBI Hari Santri</h4>
+                                         <div class="event-date">22 Oktober 2025</div>
+                                         <p>Untuk mengenang dan menghormati jasa para Ulama, meningkatkan kesadaran bela negara bagi siswa/i SMA IT Nur Hidayah.</p>
+                                     </div>
+                                                                          </div>
+                                     <div class="event-card">
+                                         <h4>PHB Isra Mikraj</h4>
+                                         <div class="event-date">31 Januari 2026</div>
+                                         <p>Mengenang perjalanan yang dilakukan Nabi Muhammad saw., Meningkatkan semangat siswa dalam berlomba-lomba dalam kebaikan. Mendorong siswa agar menjadi pribadi yang lebih beriman dan berakhlak mulia.</p>
+                                     </div>
+                                                                          </div>
+                                     <div class="event-card">
+                                         <h4>Berbagi on The Road</h4>
+                                         <div class="event-date">Senin, 2 Maret 2026</div>
+                                         <p>Merekatkan ukhuah diantara pengurus AMI dan warga sekitar. Menumbuhkan dan meningkatkan rasa peduli dan kesadaran akan pentingnya tolong-menolong dalam kehidupan sehari-hari. Mengamalkan nilai-nilai Islam melalui kegiatan berbagi dan sedekah.</p>
+                                     </div>
+                                  <div class="event-card">
+                                         <h4>Ramadan Festival</h4>
+                                         <div class="event-date">Menyesuaikan kegiatan ISC (pondok ramadhan)</div>
+                                         <p>Meningkatkan wawasan dan kecintaan terhadap Al-Qur’an serta menyadarkan siswa/i SMAIT Nur Hidayah untuk menjadikannya sebagai pedoman hidup.</p>                           </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team" id="team">
+        <div class="container">
+            <h2>Our Team</h2>
+            <div class="team-grid">
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Ahmad Nur Arifin">
+                        </div>
+                        <div class="member-info">
+                            <h3>Ahmad Nur Arifin</h3>
+                            <p class="member-role">Mentor</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Khoirunnisa">
+                        </div>
+                        <div class="member-info">
+                            <h3>Khoirunnisa</h3>
+                            <p class="member-role">Mentor</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Ahsannurizqi">
+                        </div>
+                        <div class="member-info">
+                            <h3>Ahsannurizqi</h3>
+                            <p class="member-role">Rois</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Azmina Tsania Mafaza">
+                        </div>
+                        <div class="member-info">
+                            <h3>Azmina Tsania Mafaza</h3>
+                            <p class="member-role">Roisah</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row three-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Alimul Haq al Fatih">
+                        </div>
+                        <div class="member-info">
+                            <h3>Alimul Haq al Fatih</h3>
+                            <p class="member-role">Leader of Division Sekretaris Umum</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Alifah Hasna Setyawan">
+                        </div>
+                        <div class="member-info">
+                            <h3>Alifah Hasna Setyawan</h3>
+                            <p class="member-role">Secretary of Division Sekretaris Umum</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Aqila Hanin Najiyya">
+                        </div>
+                        <div class="member-info">
+                            <h3>Aqila Hanin Najiyya</h3>
+                            <p class="member-role">Secretary of Division Sekretaris Umum</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Fauzan Rijalul Jadid">
+                        </div>
+                        <div class="member-info">
+                            <h3>Fauzan Rijalul Jadid</h3>
+                            <p class="member-role">Leader of Division Bendahara Umum</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Hasna Rifaya Nafiah">
+                        </div>
+                        <div class="member-info">
+                            <h3>Hasna Rifaya Nafiah</h3>
+                            <p class="member-role">Secretary of Division Bendahara Umum</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Fathir Hanifan Romadloni">
+                        </div>
+                        <div class="member-info">
+                            <h3>Fathir Hanifan Romadloni</h3>
+                            <p class="member-role">Leader of Division Pemberdayaan Sumber Daya Manusia</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Tsabita al Firdaus">
+                        </div>
+                        <div class="member-info">
+                            <h3>Tsabita al Firdaus</h3>
+                            <p class="member-role">Secretary of Division Pemberdayaan Sumber Daya Manusia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Yusuf Azzam Hafi">
+                        </div>
+                        <div class="member-info">
+                            <h3>Yusuf Azzam Hafi</h3>
+                            <p class="member-role">Leader of Division Syiar dan Dakwah</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Annisa Zulfa Salsabila">
+                        </div>
+                        <div class="member-info">
+                            <h3>Annisa Zulfa Salsabila</h3>
+                            <p class="member-role">Secretary of Division Syiar dan Dakwah</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="">
+                        </div>
+                        <div class="member-info">
+                            <h3>Umar Fakhruddin Khairullah</h3>
+                            <p class="member-role">Leader of Division Dewan Kemakmuran Masjid dan al Qur'an</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="">
+                        </div>
+                        <div class="member-info">
+                            <h3>Aisyah Maratus Shalikah</h3>
+                            <p class="member-role">Secretary of Division Dewan Kemakmuran Masjid dan al Qur'an</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-row two-cards">
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Syauqi Firdaus Fiiridhotillah">
+                        </div>
+                        <div class="member-info">
+                            <h3>Syauqi Firdaus Fiiridhotillah</h3>
+                            <p class="member-role">Leader of Division Jasadiyah wa Ruhiyah</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img">
+                            <img src="comingsoon.png" alt="Alya Widya Arza">
+                        </div>
+                        <div class="member-info">
+                            <h3>Alya Widya Arza</h3>
+                            <p class="member-role">Secretary of division Jasadiyah wa Ruhiyah</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p>We'd love to hear from you. Get in touch with us using the information below or fill out the form.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <a href="https://www.google.com/maps/search/?api=1&query=Jalan+Pandawa+No.10%2C+Dusun+III%2C+Kelurahan+Pucangan%2C+Kecamatan+Kartasura%2C+Kabupaten+Sukoharjo%2C+Provinsi+Jawa+Tengah+57168" target="_blank"><i class="fas fa-map-marker-alt" style="color: #9ade24;"></i></a>
+                            </div>
+                            <div>
+                                <h4>Our Office</h4>
+                                <p>Jalan Pandawa No.10, Dusun III, Kelurahan Pucangan, Kecamatan Kartasura, Kabupaten Sukoharjo, Provinsi Jawa Tengah 57168</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <a href="mailto:amismaitnh@gmail.com"><i class="fas fa-envelope" style="color: #9ade24;"></i></a>
+                            </div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>amismaitnh@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm" action="https://formspree.io/f/mnngewgv" method="POST">
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Social</h3>
+                    <p>Follow our stories.</p>
+                    <div class="social-links">
+                        <a href="https://youtube.com/@amismaitnh2239?si=XAwZMhWY3dQl2hvk"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/ami.smaitnh?igsh=ZDh1a3ByM2NndXVj"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Division</a></li>
+                        <li><a href="#team">Team</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+               <!-- <div class="footer-column">
+                    <h3>Subscribe</h3>
+                    <p>Subscribe to our newsletter for the latest updates.</p>
+                    <form class="subscribe-form">
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your Email">
+                        </div>
+                        <button type="submit" class="btn">Subscribe</button>
+                    </form>
+                </div> -->
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    this.reset();
+                    alert('Message sent successfully!');
+                } else {
+                    alert('Error sending message.');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    if (targetElement.classList.contains('events-section')) {
+                        // Hide all other events sections
+                        document.querySelectorAll('.events-section').forEach(sec => {
+                            if (sec !== targetElement) sec.style.display = 'none';
+                        });
+                        targetElement.style.display = 'block';
+                    } else if (targetId === '#services') {
+                        // Hide all events sections
+                        document.querySelectorAll('.events-section').forEach(sec => sec.style.display = 'none');
+                    }
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(window.scrollY > 100) {
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Hero video controls and adjustments
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroVideo = document.querySelector('.hero-video');
+            const heroSection = document.querySelector('.hero');
+            const videoControls = document.querySelector('.video-controls');
+            const playPauseBtn = document.getElementById('playPause');
+            const muteUnmuteBtn = document.getElementById('muteUnmute');
+            
+            let hideTimeout;
+            
+            function showControls() {
+                videoControls.classList.add('show');
+                clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(hideControls, 3000);
+            }
+            
+            function hideControls() {
+                videoControls.classList.remove('show');
+                clearTimeout(hideTimeout);
+            }
+            
+            // Initial state: hidden
+            hideControls();
+            
+            // Initial autoplay (muted)
+            heroVideo.play().catch(e => console.log('Autoplay prevented:', e));
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; // Assume playing
+            muteUnmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; // Muted
+            
+            // Toggle controls on hero section click (which targets video through pointer-events)
+            heroSection.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'I') {
+                    if (videoControls.classList.contains('show')) {
+                        hideControls();
+                    } else {
+                        showControls();
+                    }
+                }
+            });
+            
+            // Play/Pause toggle
+            playPauseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (heroVideo.paused) {
+                    heroVideo.play();
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    heroVideo.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+                showControls();
+            });
+            
+            // Mute/Unmute toggle
+            muteUnmuteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (heroVideo.muted) {
+                    heroVideo.muted = false;
+                    muteUnmuteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                } else {
+                    heroVideo.muted = true;
+                    muteUnmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                }
+                showControls();
+            });
+
+            // Function to adjust hero height based on video aspect ratio to show full video
+            function adjustHeroHeight() {
+                if (heroVideo.videoWidth > 0) {
+                    const aspectRatio = heroVideo.videoHeight / heroVideo.videoWidth;
+                    const containerWidth = heroSection.offsetWidth;
+                    const newHeight = containerWidth * aspectRatio;
+                    heroSection.style.height = newHeight + 'px';
+                    heroVideo.style.width = '100%';
+                    heroVideo.style.height = '100%';
+                    heroVideo.style.objectFit = 'contain';
+                } else {
+                    heroSection.style.height = '100vh';
+                }
+            }
+
+            // Adjust when metadata is loaded
+            heroVideo.addEventListener('loadedmetadata', adjustHeroHeight);
+
+            // Adjust on window resize
+            window.addEventListener('resize', adjustHeroHeight);
+
+            // Initial check after a short delay in case metadata loads slowly
+            setTimeout(adjustHeroHeight, 500);
+        });
+    </script>
+</body>
+</html>
