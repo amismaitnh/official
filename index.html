@@ -109,6 +109,10 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
+        .btn.active {
+            background: var(--primary);
+        }
+
         /* Header Styles */
         header {
             background: white;
@@ -252,7 +256,7 @@
 
         .hero-video {
             position: absolute;
-            top: 70px;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
@@ -276,6 +280,7 @@
             position: relative;
             z-index: 1;
             pointer-events: none;
+            width: 100%;
         }
 
         .hero-content h1 {
@@ -317,40 +322,100 @@
             transition: background 0.3s;
             margin-top: 20px;
         }
-
-        /* About Section */
-        .about {
-            background: var(--light);
+/* Stories Section – leftmost & rightmost circles stick to screen edges, fully visible */
+        .stories-section { 
+            padding: 10px 0;
+            background: white;
         }
 
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-        }
-
-        .about-text {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .about-text ul {
-            list-style-type: none;
-        }
-        
-        .about-image {
-            flex: 1;
-            border-radius: 10px;
+        .stories-wrapper {
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-image img {
             width: 100%;
-            height: auto;
-            display: block;
         }
 
+        .stories-row {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 10px 10px;                     /* small fallback padding */
+            scroll-padding: 0 10px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .stories-row::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        .story-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--secondary);
+            cursor: none;
+            flex-shrink: 0;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            scroll-snap-align: center;
+        }
+
+        /* Already watched = silver border */
+        .story-circle.watched {
+            border-color: var(--silver);
+        }
+
+        .story-circle:first-child {
+            margin-left: calc(10px - 0);      
+        }
+
+        .story-circle:last-child {
+            margin-right: calc(10px - 0);
+        }
+
+        .story-circle:hover { 
+            transform: scale(1.1); 
+        }
+
+        .story-circle img, 
+        .story-circle video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-circle.has-new::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 
+            0% { opacity: 1; transform: scale(1); } 
+            100% { opacity: 0; transform: scale(1.15); } 
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .story-circle {
+                width: 60px;
+                height: 60px;
+            }
+            .story-circle:first-child { margin-left: calc(10px - 30px); }
+            .story-circle:last-child { margin-right: calc(10px - 30px); }
+        }
+
+        @media (max-width: 480px) {
+            .story-circle {
+                width: 50px;
+                height: 50px;
+            }
+            .story-circle:first-child { margin-left: calc(10px - 25px); }
+            .story-circle:last-child { margin-right: calc(10px - 25px); }
+        }
         /* Services Section */
         .services-grid {
             display: grid;
@@ -503,6 +568,13 @@
             margin-bottom: 20px; /* Reduced margin to bring images closer */
         }
 
+        .gallery-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
         /* Force exactly 2 columns on ALL mobile devices (portrait & landscape) */
 .gallery-masonry {
     column-count: 2 !important;        /* Always 2 columns */
@@ -532,7 +604,7 @@
     }
 }
 
-.gallery-masonry img {
+.gallery-masonry img, .gallery-masonry video {
     width: 100%;
     height: auto;
     border-radius: 12px;
@@ -544,7 +616,7 @@
     cursor: none;
 }
 
-.gallery-masonry img:hover {
+.gallery-masonry img:hover, .gallery-masonry video:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0,0,0,0.18);
 }
@@ -889,6 +961,17 @@
             .winners-grid {
                 grid-template-columns: 1fr;
             }
+
+            .stories-row {
+                gap: 10px;
+                padding: 0 10px;
+            }
+
+            .story-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -931,6 +1014,12 @@
             .navbar {
                 padding: 0.5rem 0;
             }
+
+            .story-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
         }
 
         /* Landscape */
@@ -953,8 +1042,7 @@
         /* Portrait */
         @media (orientation: portrait) and (max-width: 480px) {
             .hero {
-                height: auto;
-                min-height: 100vh;
+                height: 40vh;
             }
             .hero-content {
                 padding-top: 20px;
@@ -962,6 +1050,9 @@
         }
 
         @media (orientation: portrait) {
+                        .hero {
+                height: 40vh;
+            }
             .team-row {
                 flex-direction: row;
                 justify-content: center;
@@ -1053,7 +1144,15 @@ body.lightbox-open {
     pointer-events: auto;
 }
 
-#reelsImage {
+#reelsContent video {
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    user-select: none;
+}
+
+#reelsContent img {
     max-width: 100%;
     max-height: 100vh;
     object-fit: contain;
@@ -1100,6 +1199,16 @@ body.lightbox-open {
                 <div class="video-controls">
                     <button id="playPause"><i class="fas fa-pause"></i></button>
                     <button id="muteUnmute"><i class="fas fa-volume-mute"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="stories-section">
+        <div class="stories-wrapper">
+            <div class="stories-row" id="storiesRow">
+                <div class="story-circle has-new" data-story-id="umar">
+                    <video src="umar.mp4" loop muted playsinline></video>
                 </div>
             </div>
         </div>
@@ -1527,11 +1636,16 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Syura Kerja</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1545,11 +1659,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Amandemen AD/ART</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1563,11 +1681,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Kesekretariatan</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1581,11 +1703,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Inventaris AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1599,11 +1725,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - SPHL 1</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1617,11 +1747,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Forum Kesekretariatan</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1635,11 +1769,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - SPHL 2</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1653,11 +1791,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - SPHT</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1671,11 +1813,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Galang Aspirasi AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1689,11 +1835,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Audensi AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1707,11 +1857,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Sidang Pleno 1</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1725,11 +1879,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Sidang Umum</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1743,11 +1901,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Manajemen Keuangan</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1761,11 +1923,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Kas Rutin AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1779,11 +1945,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - AMI Peduli</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1797,11 +1967,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - AMI Leadership Training</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1815,11 +1989,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - AMI Mengajar</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1833,11 +2011,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Mutabaah AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1851,11 +2033,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Halahah Sighar</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1869,11 +2055,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Gemilang Epilog AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1887,11 +2077,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Medsos AMI</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1905,11 +2099,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - AMI Curious</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1923,11 +2121,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Tarhib Ramadan</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1941,11 +2143,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Bakti Sosial (BAKSOS)</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1959,11 +2165,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Piket Rutin Masjid</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1977,11 +2187,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Pengondisian Ibadah</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -1995,11 +2209,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Jumat Berkah</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -2013,11 +2231,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Ramadan Vibes</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -2031,11 +2253,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - PHBI Maulid Nabi</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -2049,13 +2275,16 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - PHBI Hari Santri</h2>
             </div>
-   <div class="gallery-masonry">
-       <img src="comingsoon.png" alt="Hari Santri 1">
-       <img src="comingsoon.png" alt="Hari Santri 2">
-       <img src="comingsoon.png" alt="Coming soon">
-       <img src="comingsoon.png" alt="Coming soon">
-       <!-- You can add 20+ images here, they will arrange beautifully -->
-   </div>
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
+                <img src="comingsoon.png" alt="Hari Santri 1">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
+            </div>
         </div>
     </section>
 
@@ -2068,11 +2297,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - PHB Isra Mikraj</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -2086,11 +2319,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Ramadan Berbagi</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -2104,11 +2341,15 @@ body.lightbox-open {
                 </a>
                 <h2>Gallery - Ramadan Festival</h2>
             </div>
-            <div class="gallery-masonry">
+            <div class="gallery-buttons">
+                <button class="btn photo-btn active">Photos</button>
+                <button class="btn video-btn">Videos</button>
+            </div>
+            <div class="gallery-masonry photos">
                 <img src="comingsoon.png" alt="Gallery image 1">
-                <img src="comingsoon.png" alt="Gallery image 2">
-                <img src="comingsoon.png" alt="Gallery image 3">
-                <img src="comingsoon.png" alt="Gallery image 4">
+            </div>
+            <div class="gallery-masonry videos" style="display: none;">
+                <video src="comingsoon.mp4" autoplay loop muted playsinline></video>
             </div>
         </div>
     </section>
@@ -2364,25 +2605,43 @@ body.lightbox-open {
 <div class="reels-lightbox" id="reelsLightbox">
     <div class="reels-prev" id="reelsPrev">‹</div>
     <div class="reels-next" id="reelsNext">›</div>
-    <img id="reelsImage" src="" alt="Full screen view">
+    <div id="reelsContent"></div>
 </div>
 
 <script>
-// ==================== ALL YOUR ORIGINAL FEATURES ====================
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
 document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('active')));
 
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
+document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     const formData = new FormData(this);
     try {
         const response = await fetch(this.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-        if (response.ok) { this.reset(); alert('Message sent successfully!'); }
+        if (response.ok) { 
+            this.reset(); 
+            localStorage.removeItem('galangAspirasiDraft'); // Clear draft on successful submit
+            alert('Message sent successfully!'); 
+        }
         else alert('Error sending message.');
     } catch (error) { alert('Error: ' + error.message); }
 });
+
+// Auto-save draft for Galang Aspirasi form
+const messageTextarea = document.getElementById('message');
+if (messageTextarea) {
+    // Load draft on page load
+    const savedDraft = localStorage.getItem('galangAspirasiDraft');
+    if (savedDraft) {
+        messageTextarea.value = savedDraft;
+    }
+
+    // Save draft on input
+    messageTextarea.addEventListener('input', (e) => {
+        localStorage.setItem('galangAspirasiDraft', e.target.value);
+    });
+}
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -2395,6 +2654,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     sec.style.display = sec === target ? 'block' : 'none';
                 });
                 window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+
+                document.querySelectorAll('.gallery-section[style="display: none;"] .gallery-masonry video').forEach(vid => {
+                    vid.pause();
+                    vid.currentTime = 0;
+                });
+
+                if (target.classList.contains('gallery-section')) {
+                    target.querySelectorAll('.gallery-masonry video').forEach(vid => {
+                        vid.currentTime = 0;
+                        vid.play().catch(() => {});
+                    });
+                }
             }
         }
     });
@@ -2420,15 +2691,13 @@ document.addEventListener('DOMContentLoaded', function() {
         hideTimeout = setTimeout(() => videoControls.classList.remove('show'), 3000);
     }
 
+    const hero = document.querySelector('.hero');
+    hero.addEventListener('mousemove', showControls);
+    hero.addEventListener('touchstart', showControls, { passive: true });
+
     heroVideo.play().catch(() => {});
     playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
     muteUnmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-
-    document.querySelector('.hero').addEventListener('click', e => {
-        if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'I') {
-            videoControls.classList.contains('show') ? videoControls.classList.remove('show') : showControls();
-        }
-    });
 
     playPauseBtn.addEventListener('click', e => { e.stopPropagation();
         heroVideo.paused ? (heroVideo.play(), playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>') 
@@ -2443,40 +2712,62 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// ==================== CLEAN GALLERY — NO ZOOM WHATSOEVER ====================
+// Load watched stories from localStorage on page load
+function loadWatchedStories() {
+    const savedWatched = JSON.parse(localStorage.getItem('watchedStories') || '[]');
+    document.querySelectorAll('.story-circle').forEach(circle => {
+        const storyId = circle.dataset.storyId;
+        if (savedWatched.includes(storyId)) {
+            circle.classList.add('watched');
+            circle.classList.remove('has-new');
+        }
+    });
+}
+
+loadWatchedStories();
+
 const lightbox = document.getElementById('reelsLightbox');
-const img = document.getElementById('reelsImage');
+const content = document.getElementById('reelsContent');
 const prevBtn = document.getElementById('reelsPrev');
 const nextBtn = document.getElementById('reelsNext');
 
-let images = [];
+let mediaElements = [];
 let index = 0;
 let startY = 0;
 let currentTranslateY = 0;
 let backgroundOpacity = 1;
+let wasFullscreen = false;
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.gallery-masonry img').forEach(el => {
-        el.style.cursor = 'none';
-        el.addEventListener('click', () => {
-            const gallery = el.closest('.gallery-masonry');
-            images = Array.from(gallery.querySelectorAll('img'));
-            index = images.indexOf(el);
-            openLightbox();
-        });
-    });
-});
+function updateArrows() {
+    prevBtn.classList.toggle('inactive', index === 0);
+    nextBtn.classList.toggle('inactive', index === mediaElements.length - 1);
+}
 
 function openLightbox() {
-    img.src = images[index].src;
-    resetPosition();
+    loadMedia();
     lightbox.classList.add('active');
+    document.body.classList.add('lightbox-open');
     document.body.style.overflow = 'hidden';
-    history.pushState({ isLightbox: true }, document.title, window.location.href);
+    history.pushState({ isLightbox: true }, '', location.href);
+    updateArrows();
+
+    const media = content.firstChild;
+    if (media && media.tagName === 'VIDEO') {
+        setTimeout(() => enterFullscreenAndUnmute(), 100);
+    }
 }
 
 function closeLightbox() {
+    const media = content.firstChild;
+    if (media && media.tagName === 'VIDEO') media.pause();
+
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+
     lightbox.classList.remove('active');
+    document.body.classList.remove('lightbox-open');
     document.body.style.overflow = '';
     resetPosition();
 }
@@ -2484,83 +2775,131 @@ function closeLightbox() {
 function resetPosition() {
     currentTranslateY = 0;
     backgroundOpacity = 1;
-    img.style.transform = 'translateY(0px) scale(1)';
+    const media = content.firstChild;
+    if (media) media.style.transform = 'translateY(0px) scale(1)';
     lightbox.style.background = 'rgba(0,0,0,1)';
 }
 
-function goPrev() {
-    index = (index - 1 + images.length) % images.length;
-    loadImage();
+function loadMedia() {
+    const el = mediaElements[index];
+    let media = content.firstChild;
+
+    if (media && media.tagName === (el.tagName === 'VIDEO' ? 'VIDEO' : 'IMG')) {
+        media.src = el.src || el.currentSrc;
+        if (el.tagName === 'VIDEO') { media.load(); media.play().catch(()=>{}); }
+    } else {
+        content.innerHTML = '';
+        media = el.cloneNode(true);
+        media.style.maxWidth = '100%';
+        media.style.maxHeight = '100vh';
+        media.style.objectFit = 'contain';
+        if (media.tagName === 'VIDEO') {
+            media.autoplay = true;
+            media.loop = true;
+            media.muted = true;
+            media.playsinline = true;
+            media.preload = 'auto';
+        }
+        content.appendChild(media);
+    }
+
+    resetPosition();
+    updateArrows();
+
+    if (wasFullscreen) setTimeout(() => enterFullscreenAndUnmute(), 50);
 }
 
-function goNext() {
-    index = (index + 1) % images.length;
-    loadImage();
+async function enterFullscreenAndUnmute() {
+    const media = content.firstChild;
+    if (!media) return;
+    if (media.tagName === 'VIDEO') {
+        media.muted = false;
+        media.volume = 1;
+        try { await media.play(); } catch(e) {}
+    }
+    try {
+        if (media.requestFullscreen) await media.requestFullscreen();
+        else if (media.webkitRequestFullscreen) await media.webkitRequestFullscreen();
+        else if (media.webkitEnterFullscreen) await media.webkitEnterFullscreen();
+    } catch (err) {}
 }
 
-function loadImage() {
-    const newSrc = images[index].src;
-    img.style.opacity = '0';
-    const tempImg = new Image();
-    tempImg.onload = () => {
-        img.src = newSrc;
-        img.style.opacity = '1';
-        resetPosition();
-    };
-    tempImg.src = newSrc;
+function handleFullscreenChange() {
+    if (!(document.fullscreenElement || document.webkitFullscreenElement)) {
+        if (lightbox.classList.contains('active')) closeLightbox();
+    } else {
+        wasFullscreen = true;
+    }
 }
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
-// Drag down/up to close
+lightbox.addEventListener('click', e => {
+    if (e.target === prevBtn || e.target === nextBtn) return;
+
+    const media = content.firstChild;
+    if (!media) return;
+
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        if (media.tagName === 'VIDEO') media.muted = true;
+    } else {
+        enterFullscreenAndUnmute();
+    }
+});
+
 lightbox.addEventListener('touchstart', e => {
     if (e.touches.length === 1) startY = e.touches[0].clientY;
 }, { passive: true });
 
 lightbox.addEventListener('touchmove', e => {
     if (e.touches.length === 1) {
-        const currentY = e.touches[0].clientY;
-        const diffY = currentY - startY;
-        if (diffY > 0) { // drag down only
+        const diffY = e.touches[0].clientY - startY;
+        if (diffY > 0) {
             e.preventDefault();
             currentTranslateY = diffY;
             const dragRatio = Math.min(diffY / window.innerHeight, 1);
             backgroundOpacity = 1 - dragRatio * 0.8;
-            img.style.transform = `translateY(\( {currentTranslateY}px) scale( \){1 - dragRatio * 0.3})`;
+            const media = content.firstChild;
+            if (media) media.style.transform = `translateY(\( {currentTranslateY}px) scale( \){1 - dragRatio * 0.3})`;
             lightbox.style.background = `rgba(0,0,0,${backgroundOpacity})`;
         }
     }
 }, { passive: false });
 
 lightbox.addEventListener('touchend', () => {
-    if (currentTranslateY > 150 || backgroundOpacity < 0.7) {
-        closeLightbox();
-    } else {
-        currentTranslateY = 0;
-        backgroundOpacity = 1;
-        img.style.transform = 'translateY(0px) scale(1)';
-        lightbox.style.background = 'rgba(0,0,0,1)';
-    }
+    if (currentTranslateY > 150 || backgroundOpacity < 0.7) closeLightbox();
+    else resetPosition();
 });
 
-// Horizontal swipe for next/prev
 let swipeStartX = 0;
-lightbox.addEventListener('touchstart', e => {
-    swipeStartX = e.touches[0].clientX;
-});
+lightbox.addEventListener('touchstart', e => swipeStartX = e.touches[0].clientX, { passive: true });
 lightbox.addEventListener('touchend', e => {
     const diffX = swipeStartX - e.changedTouches[0].clientX;
     if (Math.abs(diffX) > 80) {
-        diffX > 0 ? goNext() : goPrev();
+        if (diffX > 0) goNext();
+        else goPrev();
     }
 });
 
-// Click handling
-lightbox.addEventListener('click', e => {
-    if (e.target === lightbox || e.target === img) closeLightbox();
-});
-prevBtn.onclick = goPrev;
-nextBtn.onclick = goNext;
+function goPrev() {
+    if (index > 0) {
+        index--;
+        loadMedia();
+    }
+}
 
-// Keyboard
+function goNext() {
+    if (index < mediaElements.length - 1) {
+        index++;
+        loadMedia();
+    }
+}
+
+prevBtn.onclick = e => { e.stopPropagation(); goPrev(); };
+nextBtn.onclick = e => { e.stopPropagation(); goNext(); };
+
 document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('active')) return;
     if (e.key === 'Escape') closeLightbox();
@@ -2568,33 +2907,77 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight') goNext();
 });
 
-// Prevent page zoom while lightbox is open
-document.documentElement.addEventListener('touchmove', e => {
-    if (e.touches.length > 1 && lightbox.classList.contains('active')) e.preventDefault();
-}, { passive: false });
+window.addEventListener('popstate', () => { if (lightbox.classList.contains('active')) closeLightbox(); });
 
-// Handle browser back button
-window.addEventListener('popstate', function(event) {
-    if (lightbox.classList.contains('active')) {
-        closeLightbox();
+document.querySelectorAll('.gallery-section').forEach(section => {
+    const photoBtn = section.querySelector('.photo-btn');
+    const videoBtn = section.querySelector('.video-btn');
+    const photos = section.querySelector('.gallery-masonry.photos');
+    const videos = section.querySelector('.gallery-masonry.videos');
+
+    if (photoBtn && videoBtn && photos && videos) {
+        photoBtn.addEventListener('click', () => {
+            photoBtn.classList.add('active'); videoBtn.classList.remove('active');
+            photos.style.display = 'block'; videos.style.display = 'none';
+            videos.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
+        });
+        videoBtn.addEventListener('click', () => {
+            videoBtn.classList.add('active'); photoBtn.classList.remove('active');
+            videos.style.display = 'block'; photos.style.display = 'none';
+            videos.querySelectorAll('video').forEach(v => {
+                v.currentTime = 0;
+                v.play().catch(() => {});
+            });
+        });
     }
 });
-// Hide cursor completely when lightbox is open
-function openLightbox() {
-    img.src = images[index].src;
-    resetPosition();
-    lightbox.classList.add('active');
-    document.body.classList.add('lightbox-open'); // <<< Add class
-    document.body.style.overflow = 'hidden';
-    history.pushState({ isLightbox: true }, document.title, window.location.href);
-}
 
-function closeLightbox() {
-    lightbox.classList.remove('active');
-    document.body.classList.remove('lightbox-open'); // <<< Remove class
-    document.body.style.overflow = '';
-    resetPosition();
-}
+document.querySelectorAll('.story-circle').forEach(circle => {
+    circle.style.cursor = 'none';
+    circle.addEventListener('click', () => {
+        const storyMedia = circle.querySelector('video') || circle.querySelector('img');
+        if (!storyMedia) return;
+
+        // Mark this story as watched and save to localStorage
+        const storyId = circle.dataset.storyId;
+        circle.classList.add('watched');
+        circle.classList.remove('has-new');
+        let watchedStories = JSON.parse(localStorage.getItem('watchedStories') || '[]');
+        if (!watchedStories.includes(storyId)) {
+            watchedStories.push(storyId);
+            localStorage.setItem('watchedStories', JSON.stringify(watchedStories));
+        }
+
+        const allStoryMedia = Array.from(document.querySelectorAll('.story-circle video, .story-circle img'))
+            .filter(el => el.src);
+
+        mediaElements = allStoryMedia.map(el => {
+            if (el.tagName === 'VIDEO') {
+                const v = document.createElement('video');
+                v.src = el.src;
+                v.loop = true;
+                v.muted = true;
+                v.playsinline = true;
+                return v;
+            }
+            return el.cloneNode();
+        });
+
+        index = allStoryMedia.indexOf(storyMedia);
+        openLightbox();
+    });
+});
+
+document.querySelectorAll('.gallery-masonry img, .gallery-masonry video').forEach(el => {
+    el.style.cursor = 'none';
+    el.addEventListener('click', () => {
+        const gallery = el.closest('.gallery-section');
+        const activeMasonry = gallery.querySelector('.gallery-masonry[style*="block"]') || gallery.querySelector('.gallery-masonry.photos');
+        mediaElements = Array.from(activeMasonry.querySelectorAll('img, video')).filter(m => m.src || m.querySelector('source'));
+        index = mediaElements.indexOf(el);
+        openLightbox();
+    });
+});
 </script>
 </body>
 </html>
